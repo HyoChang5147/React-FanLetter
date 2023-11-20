@@ -1,24 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import memberData from "shared/data";
+import { FamilyContext } from "context/FamilyContext";
 
 const MemberButton = ({
-  selectedMember,
+  setClickedMemberData,
   setSelectedMember,
-  passMemberData,
+  selectedMember,
 }) => {
+  const data = useContext(FamilyContext);
+
+  const passMemberData = (memberData) => {
+    data.setClickedMemberData(memberData); // 클릭한 멤버 정보 저장
+  };
+
   const handleButtonClick = (member) => {
-    setSelectedMember(member);
+    data.setSelectedMember(member);
     passMemberData(member); // 클릭한 멤버 정보 전달
   };
 
+  console.log(data.selectedMember);
   return (
     <ButtonContainer>
       {memberData.map((memberInfo) => (
         <Button
           key={memberInfo.id}
           onClick={() => handleButtonClick(memberInfo.member)}
-          selected={selectedMember === memberInfo.member}
+          selected={data.selectedMember === memberInfo.member}
         >
           <img src={memberInfo.nameImg} alt={memberInfo.member} />
         </Button>

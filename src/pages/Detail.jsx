@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FamilyContext } from "context/FamilyContext";
 import styled from "styled-components";
 
 const Detail = ({ fanLetters, setFanLetters, fakeData, setFakeData }) => {
+  const data = useContext(FamilyContext);
   const location = useLocation();
   const fanLetter = location.state?.fanLetter;
   const navigate = useNavigate();
@@ -32,15 +34,15 @@ const Detail = ({ fanLetters, setFanLetters, fakeData, setFakeData }) => {
     const confirmSave = window.confirm("이대로 변경 사항을 저장하시겠습니까?");
     if (confirmSave) {
       const updatedContent = { ...fanLetter, content: editedContent };
-      const updatedLetters = fanLetters.map((letter) =>
+      const updatedLetters = data.fanLetters.map((letter) =>
         letter.id === fanLetter.id ? updatedContent : letter
       );
-      setFanLetters(updatedLetters);
+      data.setFanLetters(updatedLetters);
 
-      const updatedFakeData = fakeData.map((data) =>
-        data.id === fanLetter.id ? updatedContent : data
+      const updatedFakeData = data.fakeData.map((item) =>
+        item.id === fanLetter.id ? updatedContent : item
       );
-      setFakeData(updatedFakeData);
+      data.setFakeData(updatedFakeData);
 
       setEditing(false);
       navigate("/");
@@ -61,15 +63,15 @@ const Detail = ({ fanLetters, setFanLetters, fakeData, setFakeData }) => {
       "정말로 이 팬레터를 삭제하시겠습니까?"
     );
     if (confirmDelete) {
-      const updatedLetters = fanLetters.filter(
+      const updatedLetters = data.fanLetters.filter(
         (letter) => letter.id !== fanLetter.id
       );
-      setFanLetters(updatedLetters);
+      data.setFanLetters(updatedLetters);
 
-      const updatedFakeData = fakeData.filter(
-        (data) => data.id !== fanLetter.id
+      const updatedFakeData = data.fakeData.filter(
+        (item) => item.id !== fanLetter.id
       );
-      setFakeData(updatedFakeData);
+      data.setFakeData(updatedFakeData);
 
       navigate("/");
     }

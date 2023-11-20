@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import RedVelvetLogo from "../assets/Red _Velvet_logo.png";
 import styled from "styled-components";
 import uuid from "react-uuid";
 import memberData from "shared/data";
+import { FamilyContext } from "context/FamilyContext";
 
-const Input = ({ addFanLetter }) => {
+const Input = ({ setFanLetters, fanLetters }) => {
+  const data = useContext(FamilyContext);
+
+  const addFanLetter = (newFanLetter) => {
+    data.setFanLetters([...data.fanLetters, newFanLetter]);
+  };
+
   const FanLetterState = {
     id: uuid(),
     nickname: "",

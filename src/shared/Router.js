@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./GlobalStyle";
 import Home from "../pages/Home";
 import Detail from "pages/Detail";
+import { FamilyContext } from "context/FamilyContext";
 const fakeData = require("../fakeData.json");
 
 const Router = () => {
@@ -12,38 +13,26 @@ const Router = () => {
   const [fakeDataState, setFakeDataState] = useState(fakeData);
 
   return (
-    <>
-      <GlobalStyle />
-      <BrowserRouter>
+    <BrowserRouter>
+      <FamilyContext.Provider
+        value={{
+          selectedMember,
+          setSelectedMember,
+          fakeDataState,
+          setFakeDataState,
+          fanLetters,
+          setFanLetters,
+          clickedMemberData,
+          setClickedMemberData,
+        }}
+      >
+        <GlobalStyle />
         <Routes>
-          <Route
-            path="/"
-            element={
-              <Home
-                selectedMember={selectedMember}
-                setSelectedMember={setSelectedMember}
-                fakeData={fakeDataState}
-                fanLetters={fanLetters}
-                setFanLetters={setFanLetters}
-                clickedMemberData={clickedMemberData}
-                setClickedMemberData={setClickedMemberData}
-              />
-            }
-          />
-          <Route
-            path="detail/:id"
-            element={
-              <Detail
-                fanLetters={fanLetters}
-                setFanLetters={setFanLetters}
-                fakeData={fakeDataState}
-                setFakeData={setFakeDataState}
-              />
-            }
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="detail/:id" element={<Detail />} />
         </Routes>
-      </BrowserRouter>
-    </>
+      </FamilyContext.Provider>
+    </BrowserRouter>
   );
 };
 

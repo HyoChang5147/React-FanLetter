@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { FamilyContext } from "context/FamilyContext";
 
 const renderData = (dataArray) => {
   const shortenContent = (content) => {
@@ -20,7 +21,7 @@ const renderData = (dataArray) => {
         <LetterContainer>
           <Avatar src={data.avatar} alt="Avatar" />
           <div>
-            <WrittenTo>To.: {data.writedTo}</WrittenTo>
+            <WrittenTo>To. {data.writedTo}</WrittenTo>
             <Nickname>Name: {data.nickname}</Nickname>
             <Content>Letter: {shortenContent(data.content)}</Content>
             <CreatedAt>
@@ -33,16 +34,28 @@ const renderData = (dataArray) => {
     </StyledLink>
   ));
 };
-const FanLetter = ({ fanLetters, fakeData, selectedMember }) => {
-  fanLetters.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+const FanLetter = ({ fanLetters, selectedMember, fakeDataState }) => {
+  const data = useContext(FamilyContext);
 
-  const filteredLetters = fanLetters.filter(
-    (letter) => letter.writedTo === selectedMember
-  );
+  if (data !== null) {
+    data.fanLetters.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  }
 
-  const filteredFakeData = fakeData.filter(
-    (data) => data.writedTo === selectedMember
-  );
+  const filteredLetters =
+    data === null
+      ? []
+      : data.fanLetters.filter(
+          (letter) => letter.writedTo === data.selectedMember
+        );
+
+  const filteredFakeData =
+    data === null
+      ? []
+      : data.fakeDataState.filter(
+          (data) => data.writedTo === data.selectedMember
+        );
 
   return (
     <div>
