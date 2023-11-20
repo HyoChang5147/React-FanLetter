@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import GlobalStyle from "../GlobalStyle";
+import GlobalStyle from "./GlobalStyle";
 import Home from "../pages/Home";
 import Detail from "pages/Detail";
 const fakeData = require("../fakeData.json");
